@@ -1,10 +1,5 @@
 #!/bin/sh
 
-#
-# Ensures RabbitMQ can pick up the port supplied
-# by foreman as the AMQP listening port
-#
-
 # Directories
 dir=$PWD/broker
 tmp=$dir/tmp

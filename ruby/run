@@ -10,7 +10,7 @@ require "messaging"
 # Get the amqp port rabbit is running on
 port = ENV["AMQP_PORT"]
 
-# Ensure stdout is flushed, due to foreman
+# Ensure stdout is flushed
 $stdout.sync = true
 
 Messaging::Configuration.setup do |config|

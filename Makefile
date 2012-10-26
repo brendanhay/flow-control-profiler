@@ -1,5 +1,7 @@
-REBAR=`which rebar`
-BUNDLE=`which bundle`
+REBAR  := `which rebar`
+BUNDLE := `which bundle`
+
+AMQP_PORT := 5673
 
 #
 # Targets
@@ -9,8 +11,8 @@ BUNDLE=`which bundle`
 
 broker:
 	$(REBAR) get-deps compile
-	./broker/run
+	AMQP_PORT=$(AMQP_PORT) ./broker/run
 
 ruby:
 	$(BUNDLE) install
-	./ruby/run
+	AMQP_PORT=$(AMQP_PORT) ./ruby/run
