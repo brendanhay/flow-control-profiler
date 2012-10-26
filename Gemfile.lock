@@ -1,0 +1,20 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    amq-client (0.9.5)
+      amq-protocol (>= 0.9.4)
+      eventmachine
+    amq-protocol (0.9.5)
+    amqp (0.9.8)
+      amq-client (~> 0.9.5)
+      amq-protocol (>= 0.9.4)
+      eventmachine
+    amqp-subscribe-many (0.2.0)
+      amqp (>= 0.9.6)
+    eventmachine (1.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  amqp-subscribe-many

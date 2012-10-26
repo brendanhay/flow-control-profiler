@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "bundler"
+
+Bundler.setup(:default)
+
+require "messaging"
+
+# Get the amqp port rabbit is running on
+port = ENV["AMQP_PORT"]
+
+# Ensure stdout is flushed, due to foreman
+$stdout.sync = true
+
+Messaging::Configuration.setup do |config|
+  config.logger = Logger.new("/dev/null")
+  config.publish_to = "amqp://localhost:#{port}"
+  config.consume_from = [
+    "amqp://localhost:#{port}"
+  ]
+end
+
+class Processor
+  include Messaging::Producer
+  include Messaging::Consumer
+
+  subscribe("exchange", "direct", "queue", "key")
+
+  def on_message(meta, payload)
+    # noop
+  end
+end
+
+EM.run do
+  # Instantiate the processor
+  processor = Processor.new
+
+  # Start the processors
+  processor.consume
+
+  # Create a handle to the publish timer, to cancel later
+  timer = EM.add_periodic_timer(0) do
+    processor.publish("exchange", "direct", "key", "a_producer_payload")
+  end
+
+  trap("INT") do
+    EM.stop
+  end
+end

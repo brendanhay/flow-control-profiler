@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# Ensures RabbitMQ can pick up the port supplied
+# by foreman as the AMQP listening port
+#
+
+# Directories
+dir=$PWD/broker
+tmp=$dir/tmp
+
+# Clean previous run's mnesia, logs
+if [ -n "$dir" ]; then
+    rm -rf $tmp
+fi
+
+# Specify the env variables
+env="HOME=${tmp}
+     RABBITMQ_NODENAME=rabbitoh
+     RABBITMQ_NODE_PORT=${AMQP_PORT}
+     RABBITMQ_CONFIG_FILE=${dir}/rabbit
+     RABBITMQ_ENABLED_PLUGINS_FILE=${dir}/enabled_plugins
+     RABBITMQ_MNESIA_BASE=${tmp}/mnesia
+     RABBITMQ_LOG_BASE=${tmp}/logs"
+
+# Run the env wrapper
+eval `echo "${env} rabbitmq-server" | tr -s " " | tr "\n" " "`
